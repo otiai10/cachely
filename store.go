@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/otiai10/cachely/storage"
+	"github.com/otiai10/cachely/implements"
 )
 
 var store Store

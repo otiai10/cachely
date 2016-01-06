@@ -5,12 +5,11 @@ import (
 	"time"
 )
 
-// Expire ...
-var Expire = 10 * time.Second
+var expire = 10 * time.Second
 
 // Expires ...
 func Expires(dur time.Duration) {
-	Expire = dur
+	expire = dur
 }
 
 // Get ...
@@ -21,18 +20,19 @@ func Get(url string) (*http.Response, error) {
 		return new(http.Response), err
 	}
 
-	if res, err := store.Get(req); res != nil && err == nil {
-		return res, nil
+	res, err := store.Get(req)
+	if res != nil && err == nil {
+		return Clone(res)
 	}
 
-	res, err := http.Get(url)
+	res, err = http.Get(url)
 	if err != nil {
 		return res, err
 	}
 
 	clone, err := Clone(res)
 	if err == nil {
-		err = store.Set(req, clone, time.Now().Add(Expire))
+		err = store.Set(req, clone, time.Now().Add(expire))
 	}
 
 	return res, err

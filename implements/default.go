@@ -46,6 +46,10 @@ func (s DefaultStore) Get(req *http.Request) (*http.Response, error) {
 	if !ok {
 		return nil, fmt.Errorf("not found")
 	}
+	if hit.expire.Before(time.Now()) {
+		delete(s, key)
+		return nil, fmt.Errorf("already expired")
+	}
 	return hit.resp, nil
 }
 
