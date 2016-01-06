@@ -8,6 +8,11 @@ import (
 // Expire ...
 var Expire = 10 * time.Second
 
+// Expires ...
+func Expires(dur time.Duration) {
+	Expire = dur
+}
+
 // Get ...
 func Get(url string) (*http.Response, error) {
 
