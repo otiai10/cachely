@@ -13,7 +13,11 @@ func Expires(dur time.Duration) {
 }
 
 // Get ...
-func Get(url string) (*http.Response, error) {
+func Get(url string, client ...*http.Client) (*http.Response, error) {
+
+	if len(client) == 0 {
+		client = append(client, http.DefaultClient)
+	}
 
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
@@ -25,7 +29,7 @@ func Get(url string) (*http.Response, error) {
 		return Clone(res)
 	}
 
-	res, err = http.Get(url)
+	res, err = client[0].Get(url)
 	if err != nil {
 		return res, err
 	}
